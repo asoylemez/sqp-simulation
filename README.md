@@ -1,96 +1,163 @@
-🔬 Coherent Quantum Oscillator Network (CQON) Simulation
-A novel physical framework for the emergence of life through quantum coherence.
+# Coherent Quantum Oscillator Network (CQON) Model
 
-## 🌟 Overview
-This repository implements the Coherent Quantum Oscillator Network (CQON) model, a new physical framework for studying how life emerges through quantum coherence and energy-information transformation. The model demonstrates how quantum coherence can mediate the direct conversion of energy flow into structured information.
+![CQON Model](https://img.shields.io/badge/Model-Quantum_Coherence-blue)
+![Astrobiology](https://img.shields.io/badge/Field-Astrobiology-green)
+![Python](https://img.shields.io/badge/Language-Python-yellow)
+![Mars Research](https://img.shields.io/badge/Application-Mars_Research-red)
 
-## 📄 Preprint Status
-**Manuscript Title:** "Energy-Information Transformation: Coherent Quantum Oscillator Network Model for the Emergence of Life via Quantum Coherence"  
-**Status:** Submitted to BioRxiv - Under Review  
-**Official Link:** [Coming soon after approval]  
-**Authors:** Akın Söylemez
+## 🌌 Overview
+
+The **Coherent Quantum Oscillator Network (CQON)** model is a novel physics-based framework that explains how quantum coherence mediates the conversion from energy to structured information - the fundamental process underlying life's emergence. This model provides universal biosignature criteria applicable to Mars, exoplanets, and diverse planetary environments.
+
+> **Key Insight**: Quantum coherence serves as a universal biosignature, with measurable thresholds distinguishing habitable from non-habitable environments across planetary systems.
 
 ## 🚀 Quick Start
 
 ```bash
+# Clone repository
+git clone https://github.com/asoylemez/cqon-simulation.git
+cd cqon-simulation
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Generate Figure 1 - Life Threshold Region
-python Life_Threshold_Zone_Simulation.py
+# Run comprehensive Mars-Earth comparative analysis (MAIN SCRIPT)
+python Mars_and_Earth_CQON.py  # Generates Figures 5, 6, 7
 
-# Generate Figures 2, 3, 4 - Phase Map, Energy-Entropy, Hierarchy
-python 2_3_4_Figurs.py
+# Generate additional figures
+python Life_Threshold_Zone_Simulation.py  # Figure 1
+python 2_3_4_Figurs.py                    # Figures 2, 3, 4
+python realistic_test.py                   # Realistic scenarios
 
-# Run realistic scenario testing
-python realistic_test.py
+📊 Model Equations
+Coherence Evolution
+dcᵢ/dt = αR_local,i - γcᵢ + √(2T)ηᵢ(t)
+Local Resonance Field
+R_local,i = (1/N_i) Σ cos(θ_i - θ_j)
+Energy Density
+E_i = K₀ c_i R_local,i
 
-📁 Repository Structure
-cqon-simulation/
-├── Life_Threshold_Zone_Simulation.py  # Generates Figure 1 (Life-Threshold Region)
-├── 2_3_4_Figurs.py                    # Generates Figures 2, 3, 4
-├── cqon_model.py                      # Core CQON simulation class
-├── realistic_test.py                   # Realistic scenario testing
-├── requirements.txt                    # Python dependencies
-├── Figure_1_EN.png                    # Life-Threshold Region (English)
-├── Figure_2_EN.png                    # Phase Map (English)
-├── Figure_3_EN.png                    # Energy-Entropy Evolution (English)
-├── Figure_4_EN.png                    # Multi-Scale Hierarchy (English)
-└── README.md                          # This file
+🪐 Planetary Scenarios & Quantum Biosignatures
+Scenario	        Parameters (α,γ,T)	Mean Coherence	Coherence Growth	Mean Islands	E-S Correlation	Life-Like
+Early Earth	      0.35, 0.07, 0.15	  0.342 ± 0.043	   246.8%	          12.7 ± 2.2	   -0.658 ± 0.12	PARTIALLY
+Past Mars	        0.30, 0.09, 0.18	  0.204 ± 0.050	   105.6%	          6.7 ± 2.1	     -0.695 ± 0.15	PARTIALLY
+Mars Microhabitat	0.28, 0.08, 0.16	  0.231 ± 0.059	   130.2%	          7.4 ± 2.7	     -0.690 ± 0.18	PARTIALLY
+Present Mars	    0.20, 0.12, 0.28	  0.129 ± 0.010	   28.2%	          1.5 ± 0.7	     -0.176 ± 0.22	NO
 
-🔧 Requirements
-numpy>=1.21.0
-matplotlib>=3.5.0
-scipy>=1.7.0
-seaborn>=0.11.0
+📈 Critical Thresholds for Planetary Habitability
+The model identifies three universal thresholds for life-like organization:
+Coherence Threshold: Mean coherence > 0.25
+Island Formation: >5 coherence islands
+Energy-Information: Strong negative correlation r < -0.5
 
-🎯 Key Findings
-Life-Threshold Region: Identified at K₀ ≥ 0.8, α ≥ 0.4, T ≤ 0.15
-Energy-Information Transformation: Strong inverse correlation (r = -0.873)
-Coherence Growth: 246% increase under Early Earth conditions (0.121 → 0.419)
-Spontaneous Organization: 13-18 coherence islands emerge spontaneously
-Environmental Robustness: Works across noise levels (T = 0.08-0.22)
+🔬 Mars-Specific Findings
+Statistical Significance Analysis
+Early Earth vs Past Mars: t(28) = 7.847, p < 0.0001, Cohen's d = 2.966 (Large Effect)
+Early Earth vs Mars Microhabitat: t(28) = 5.688, p < 0.0001, Cohen's d = 2.150 (Large Effect)
+Early Earth vs Present Mars: t(28) = 18.045, p < 0.0001, Cohen's d = 6.820 (Very Large Effect)
 
-📊 Experimental Validation
-Scenario	Parameters	Avg Coherence	Islands	E-S Correlation	Life-Like
-Early Earth	α=0.35, γ=0.07, T=0.15	0.355	14	-0.562	✅ HIGH
-Optimal Quantum	α=0.45, γ=0.05, T=0.08	0.320	13	-0.678	✅ Medium
-Ocean Depth	α=0.38, γ=0.04, T=0.12	0.306	18	-0.586	✅ Medium
-High Noise	α=0.28, γ=0.10, T=0.22	0.315	13	-0.254	⚠️ Low
+Mars Triage Classification
+✅ Past Mars: Potentially habitable during Noachian period
+⚠️ Mars Microhabitat: Localized habitable niches in subsurface environments
+❌ Present Mars: Non-habitable surface conditions
 
-🔬 Early Earth Simulation Results
-Under prebiotic Earth-like conditions (α=0.35, T=0.15):
-Coherence Growth: 0.121 → 0.419 (246% increase)
-Information Islands: 13 stable coherence regions
-Energy-Entropy Correlation: Strong inverse relationship (r = -0.543)
-Life-Like Organization: ✅ CONFIRMED
+📊 Generated Figures
+Core Analysis Figures
+Figure 1: Life-Threshold Region in α-T Parameter Space
+Figure 2: Universal Phase Map of Quantum Habitability
+Figure 3: Energy-Entropy Inverse Correlation
+Figure 4: Multi-Scale Resonance Hierarchy
+
+Mars Comparative Analysis Figures (Generated by Mars_and_Earth_CQON.py)
+Figure 5: Performance Metrics Across Planetary Scenarios
+  A) Final Coherence Distribution (Box plots)
+  B) Coherence Evolution Time Series
+  C) Coherence Island Formation
+  D) Energy-Entropy Correlation Distribution
+Figure 6: Statistical Analysis and Organization Scoring
+  A) Statistical Comparison (p-values & Cohen's d)
+  B) Life-Like Organization Scoring
+Figure 7: Spatial Coherence Patterns
+  Coherence maps for all four planetary scenarios
+
+  📁 Repository Structure
+  cqon-simulation/
+├── Mars_and_Earth_CQON.py             # MAIN SCRIPT: Comparative planetary analysis
+├── cqon_model.py                      # Core CQON model class
+├── Life_Threshold_Zone_Simulation.py  # Parameter space exploration
+├── 2_3_4_Figurs.py                    # Visualization and figure generation
+├── realistic_test.py                  # Realistic scenario testing
+├── requirements.txt                   # Python dependencies
+├── README.md                         # This file
+└── figures/                          # Generated figures
+    ├── Figure_1_EN.png               # Life-threshold region
+    ├── Figure_2_EN.png               # Universal phase map
+    ├── Figure_3_EN.png               # Energy-entropy correlation
+    ├── Figure_4_EN.png               # Multi-scale hierarchy
+    ├── Figure_5_EN.png               # Performance metrics comparison
+    ├── Figure_6_EN.png               # Statistical analysis
+    └── Figure_7_EN.png               # Spatial coherence maps
+
+🛠 Usage Examples
+
+Main Analysis Script (Recommended)
+# Run the complete Mars-Earth comparative analysis
+python Mars_and_Earth_CQON.py
+
+Programmatic Usage
+from cqon_model import CQONMarsEarthComparator
+# Initialize comparator for planetary analysis
+comparator = CQONMarsEarthComparator(grid_size=12, dt=0.1, K0=1.0)
+# Run full comparative analysis (generates Figures 5, 6, 7)
+all_results, stats_df, summary_df = comparator.run_comparative_analysis(n_runs=15)
+# Display statistical results
+print("Statistical Significance Analysis:")
+print(stats_df)
+print("\nPerformance Summary:")
+print(summary_df)
+
+Individual Planetary Scenario Testing
+# Test specific planetary conditions
+results = comparator.simulate_scenario(
+    alpha=0.30,    # Past Mars parameters
+    gamma=0.09, 
+    T=0.18,
+    scenario_name="Past_Mars",
+    total_time=150
+)
 
 🎯 Model Parameters
-α (Resonance Sensitivity): 0.01-1.0 [1/time]
-γ (Decoherence Rate): 0.001-0.1 [1/time]
-K₀ (Coupling Strength): 0.1-2.0 [energy units]
-T (Noise Intensity): 0.01-0.5 [dimensionless]
+α (Resonance Sensitivity): 0.01-1.0 [1/time] - Quantum information transfer efficiency
+γ (Decoherence Rate): 0.001-0.1 [1/time] - Environmental disruption (radiation, thermal)
+K₀ (Coupling Strength): 0.1-2.0 [energy units] - Fundamental interaction energy scale
+T (Noise Intensity): 0.01-0.5 [dimensionless] - Thermal and environmental noise
 
-📄 Citation
-If you use this code in your research, please cite:
-bibtex
-@software{cqon_simulation2024,
-  title = {Coherent Quantum Oscillator Network Model for the Emergence of Life},
-  author = {Söylemez, Akın},
-  year = {2024},
-  url = {https://github.com/asoylemez/cqon-simulation}
+🔬 Scientific Significance
+Key Advancements
+First Physics-Based Framework for planetary habitability assessment using quantum coherence metrics
+Mars Habitability Triage quantitatively distinguishing Past Mars, Microhabitats, and Present Mars
+Universal Biosignatures applicable to both Mars and exoplanetary systems
+Statistical Validation with large effect sizes (Cohen's d > 2.0) confirming model discriminative power
 
-🔬 Philosophical Implications
-Our results support the hypothesis that life represents a natural phase transition in the energy-information continuum:
-Universal Life Principle: Environments with quantum coherence can generate proto-organic structures
-Information as Physics: Information is fundamental to physical organization
-Redefined Habitability: Life-search should focus on "coherence ecosystems"
+Astrobiological Implications
+Quantum Habitable Zone: Complement to traditional circumstellar habitable zones
+Mars Exploration Targeting: Identifies specific locations for coherence signature detection
+Universal Life Detection: Physics-based approach beyond chemical biosignatures
+
+📄 Associated Publication
+This repository contains the simulation code and data for the study:
+"Quantum Coherence as a Universal Biosignature: Applications to Mars and Exoplanetary Systems"
+
+Author: Akın Söylemez
 
 📞 Contact
-Author: Akın Söylemez
+Akın Söylemez
 Email: soylemez.akin@gmail.com
-GitHub: asoylemez
-Repository: https://github.com/asoylemez/cqon-simulation
+GitHub: @asoylemez
 
 📜 License
 This project is licensed under the MIT License - see the repository for details.
+
+Citation: If you use this code in your research, please cite the associated publication.
+Data Availability: All simulation data, statistical results, and analysis scripts are available in this repository.
+Main Script: Mars_and_Earth_CQON.py contains the complete comparative analysis workflow.
