@@ -55,6 +55,17 @@ R_local,i = (1/N_i) Σ cos(θ_i - θ_j)
 Energy Density
 E_i = K₀ c_i R_local,i
 
+🔬 Empirical Mars Mission Data Integration
+The CQON model parameters are empirically grounded in direct measurements from NASA's Mars rover missions:
+
+Parameter	Physical Basis	Mars Mission Data	Instrument
+γ (Decoherence)	Radiation environment	0.64-0.70 mSv/day (100× Earth)	Curiosity RAD
+T (Noise)	Thermal variability	-80°C to +20°C daily cycles	REMS, MEDA
+α (Resonance)	Mineral structure	Magnetite→Hematite transitions	CheMin, PIXL, SHERLOC
+K₀ (Coupling)	Iron oxide density	~20-30% Fe-oxide abundance	APXS, CheMin, PIXL
+
+This empirical mapping ensures physical realism in planetary habitability assessments.
+
 🪐 Planetary Scenarios & Assessment Results
 Scenario	Parameters (α,γ,T)	Mean Coherence	Coherence Growth	Mean Islands	E-S Correlation	Life-Like
 Early Earth	0.35, 0.07, 0.15	0.342 ± 0.043	246.8%	12.7 ± 2.2	-0.658 ± 0.12	✅ HIGH
@@ -139,7 +150,7 @@ cqon-simulation/
     └── Figure_7_EN.png                # Spatial coherence maps
 
 
-    🛠 Usage Examples
+🛠 Usage Examples
 Main Analysis Script (Recommended)
 # Run the complete Mars-Earth comparative analysis
 python Mars_and_Earth_CQON.py
@@ -188,6 +199,8 @@ Standardized Assessment Framework applicable to both Mars and exoplanetary syste
 
 Statistical Validation with large effect sizes confirming model discriminative power
 
+Empirical Grounding in direct Mars mission measurements from Curiosity and Perseverance rovers
+
 Astrobiological Implications
 Quantum Coherence Sustainability Criteria: Physics-based complement to traditional circumstellar habitable zones
 
@@ -211,6 +224,8 @@ Experimental Validation Required: These thresholds represent testable hypotheses
 
 Comparative Framework: The classification system enables systematic comparison across planetary environments
 
+Empirical Foundation: Model parameters are calibrated using actual Mars mission data for physical realism
+
 📞 Contact
 Akın Söylemez
 Email: soylemez.akin@gmail.com
@@ -226,4 +241,3 @@ Data Availability: All simulation data, statistical results, and analysis script
 Main Script: Mars_and_Earth_CQON.py contains the complete comparative analysis workflow.
 
 This research represents an ongoing investigation into quantum coherence as a potential framework for understanding life's emergence across planetary environments. All findings should be interpreted as model-based insights requiring further experimental validation.
-
