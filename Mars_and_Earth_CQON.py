@@ -1,3 +1,9 @@
+"""
+CQON Mars-Earth Comparative Analysis - UPDATED
+Standardized thresholds and classification system
+Coherent Quantum Oscillator Network Model for planetary habitability assessment
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,19 +15,57 @@ from statsmodels.stats.power import TTestIndPower
 
 
 class CQONMarsEarthComparator:
+    # STANDARDIZED THRESHOLDS (Based on research paper)
+    COHERENCE_THRESHOLD = 0.30  # ⟨c⟩ threshold for life-like organization
+    ISLANDS_THRESHOLD = 3  # Minimum coherence islands
+    CORRELATION_THRESHOLD = -0.45  # Energy-entropy correlation threshold
+
+    # CLASSIFICATION BOUNDARIES
+    HIGH_COHERENCE = 0.30  # HIGH classification threshold
+    MEDIUM_COHERENCE = 0.25  # MEDIUM classification threshold
+    LOW_COHERENCE = 0.15  # LOW classification threshold
+
     def __init__(self, grid_size=12, dt=0.1, K0=1.0):
         self.grid_size = grid_size
         self.dt = dt
         self.K0 = K0
         self.N = grid_size * grid_size
 
-        # Güncellenmiş senaryo tanımları (Present Earth çıkarıldı)
+        # Güncellenmiş senaryo tanımları (standardized parameters)
         self.scenarios = {
             'Early_Earth': {'alpha': 0.35, 'gamma': 0.07, 'T': 0.15, 'color': '#2ca02c'},
             'Past_Mars': {'alpha': 0.30, 'gamma': 0.09, 'T': 0.18, 'color': '#ff7f0e'},
             'Mars_Microhabitat': {'alpha': 0.28, 'gamma': 0.08, 'T': 0.16, 'color': '#d62728'},
             'Present_Mars': {'alpha': 0.20, 'gamma': 0.12, 'T': 0.28, 'color': '#9467bd'}
         }
+
+    def classify_organization(self, avg_coherence, num_islands, correlation):
+        """
+        Classify system organization based on standardized criteria
+        Returns: classification string and boolean for life-like
+        """
+        # Check for HIGH (life-like) organization
+        life_like = (avg_coherence > self.COHERENCE_THRESHOLD and
+                     num_islands >= self.ISLANDS_THRESHOLD and
+                     correlation < self.CORRELATION_THRESHOLD)
+
+        if life_like:
+            return "HIGH", True
+        elif avg_coherence > self.MEDIUM_COHERENCE:
+            return "MEDIUM", False
+        elif avg_coherence > self.LOW_COHERENCE:
+            return "LOW", False
+        else:
+            return "NO", False
+
+    def calculate_life_like_score(self, coh, islands, corr):
+        """Standardized life-like organization scoring"""
+        score = 0
+        if coh > self.COHERENCE_THRESHOLD: score += 1
+        if islands >= self.ISLANDS_THRESHOLD: score += 1
+        if corr < self.CORRELATION_THRESHOLD: score += 1
+        if coh > 0.35 and islands >= 4: score += 1  # Bonus for strong performance
+        return score
 
     def simulate_scenario(self, alpha, gamma, T, total_time=150, scenario_name="Scenario"):
         """Bir senaryo için CQON simülasyonu çalıştırır"""
@@ -58,7 +102,7 @@ class CQONMarsEarthComparator:
             # Metrikleri hesapla
             current_mean_coherence = np.mean(c)
             total_energy, entropy = self.calculate_thermodynamics(c, R_local)
-            coherence_islands = self.count_coherence_islands(c, threshold=0.6)
+            coherence_islands = self.count_coherence_islands(c)  # Updated threshold
             coherence_growth = (current_mean_coherence - initial_coherence) / initial_coherence * 100
 
             if t % 15 == 0:
@@ -110,9 +154,9 @@ class CQONMarsEarthComparator:
 
         return total_energy, entropy
 
-    def count_coherence_islands(self, c_map, threshold=0.6):
-        """Uyum adalarını say"""
-        binary_map = (c_map > threshold).astype(int)
+    def count_coherence_islands(self, c_map):
+        """Uyum adalarını say - UPDATED THRESHOLD"""
+        binary_map = (c_map > self.COHERENCE_THRESHOLD).astype(int)  # Updated to 0.30
         labeled_array, num_features = ndimage.label(binary_map)
         return num_features
 
@@ -134,19 +178,34 @@ class CQONMarsEarthComparator:
         else:
             stability = np.std(time_series['mean_coherence'])
 
+        # Standardized classification
+        classification, life_like = self.classify_organization(
+            final_mean_coherence,
+            np.max(time_series['coherence_islands']) if time_series['coherence_islands'] else 0,
+            energy_entropy_corr
+        )
+
         results = {
             'final_mean_coherence': final_mean_coherence,
             'max_coherence': max_coherence,
             'final_energy': time_series['energy_total'][-1] if time_series['energy_total'] else 0,
             'final_entropy': time_series['entropy'][-1] if time_series['entropy'] else 0,
-            'max_coherence_islands': np.max(time_series['coherence_islands']),
+            'max_coherence_islands': np.max(time_series['coherence_islands']) if time_series[
+                'coherence_islands'] else 0,
             'coherence_growth_percent': coherence_growth,
             'energy_entropy_correlation': energy_entropy_corr,
             'stability': stability,
             'final_coherence_map': c,
             'time_series': time_series,
             'parameters': {'alpha': alpha, 'gamma': gamma, 'T': T, 'K0': self.K0},
-            'scenario_name': scenario_name
+            'scenario_name': scenario_name,
+            'organization_classification': classification,
+            'life_like_organization': life_like,
+            'life_like_score': self.calculate_life_like_score(
+                final_mean_coherence,
+                np.max(time_series['coherence_islands']) if time_series['coherence_islands'] else 0,
+                energy_entropy_corr
+            )
         }
 
         return results
@@ -175,7 +234,7 @@ class CQONMarsEarthComparator:
 def perform_statistical_analysis(all_results):
     """Comprehensive statistical analysis"""
     print("\n" + "=" * 60)
-    print("STATISTICAL SIGNIFICANCE ANALYSIS")
+    print("STATISTICAL SIGNIFICANCE ANALYSIS - STANDARDIZED")
     print("=" * 60)
 
     # Using Early Earth as reference for t-tests
@@ -255,9 +314,11 @@ def create_comprehensive_visualization(all_results, stats_df):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
 
-    ax1.axhline(y=0.35, color='red', linestyle='--', linewidth=2, alpha=0.8, label='Life Threshold (0.35)')
+    ax1.axhline(y=0.30, color='red', linestyle='--', linewidth=2, alpha=0.8,
+                label='Life Threshold (0.30)')
     ax1.set_ylabel('Mean Coherence <c>', fontsize=12, fontweight='bold')
-    ax1.set_title('A) Final Coherence Distribution Across Planetary Scenarios', fontsize=12, fontweight='bold')
+    ax1.set_title('A) Final Coherence Distribution Across Planetary Scenarios',
+                  fontsize=12, fontweight='bold')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
@@ -268,7 +329,7 @@ def create_comprehensive_visualization(all_results, stats_df):
                  label=scenario_name.replace('_', ' '),
                  color=colors[scenario_name], linewidth=2.5)
 
-    ax2.axhline(y=0.35, color='red', linestyle='--', alpha=0.7)
+    ax2.axhline(y=0.30, color='red', linestyle='--', alpha=0.7, label='Coherence Threshold')
     ax2.set_xlabel('Time (Arbitrary Units)')
     ax2.set_ylabel('Mean Coherence <c>')
     ax2.set_title('B) Coherence Evolution Time Series', fontsize=12, fontweight='bold')
@@ -286,7 +347,8 @@ def create_comprehensive_visualization(all_results, stats_df):
                        color=[colors[s] for s in scenarios], alpha=0.7,
                        capsize=5, error_kw={'elinewidth': 2, 'capthick': 2})
 
-    ax3.axhline(y=2, color='red', linestyle='--', alpha=0.7, label='Min Island Threshold')
+    ax3.axhline(y=3, color='red', linestyle='--', alpha=0.7,
+                label='Island Threshold (3)')
     ax3.set_ylabel('Number of Coherence Islands')
     ax3.set_title('C) Coherence Island Formation', fontsize=12, fontweight='bold')
     ax3.legend()
@@ -302,7 +364,8 @@ def create_comprehensive_visualization(all_results, stats_df):
         pc.set_facecolor(color)
         pc.set_alpha(0.7)
 
-    ax4.axhline(y=-0.4, color='red', linestyle='--', alpha=0.7, label='Correlation Threshold')
+    ax4.axhline(y=-0.45, color='red', linestyle='--', alpha=0.7,
+                label='Correlation Threshold (-0.45)')
     ax4.set_xticks(range(1, len(labels) + 1))
     ax4.set_xticklabels(labels)
     ax4.set_ylabel('Energy-Entropy Correlation (r)')
@@ -311,7 +374,7 @@ def create_comprehensive_visualization(all_results, stats_df):
     ax4.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig('CQON_Performance_Metrics.png', dpi=300, bbox_inches='tight')
+    plt.savefig('CQON_Performance_Metrics_Standardized.png', dpi=300, bbox_inches='tight')
     plt.show()
 
     # FIGURE 2: Statistical Analysis
@@ -331,7 +394,8 @@ def create_comprehensive_visualization(all_results, stats_df):
         ax1.set_xticks(x_pos)
         ax1.set_xticklabels([comp.replace('Early_Earth vs ', '') for comp in comparisons], rotation=45)
         ax1.set_ylabel('Values')
-        ax1.set_title('A) Statistical Comparison: Early Earth vs Other Scenarios', fontsize=12, fontweight='bold')
+        ax1.set_title('A) Statistical Comparison: Early Earth vs Other Scenarios',
+                      fontsize=12, fontweight='bold')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
 
@@ -342,29 +406,36 @@ def create_comprehensive_visualization(all_results, stats_df):
 
     # 2B. Performance Score Comparison
     performance_scores = []
+    classifications = []
     for scenario_name in scenarios:
         mean_coh = np.mean([r['final_mean_coherence'] for r in all_results[scenario_name]])
         islands = np.mean([r['max_coherence_islands'] for r in all_results[scenario_name]])
         mean_corr = np.mean([r['energy_entropy_correlation'] for r in all_results[scenario_name]])
-        score = calculate_life_like_score(mean_coh, islands, mean_corr)
+
+        # Use standardized classification
+        classification, _ = CQONMarsEarthComparator().classify_organization(mean_coh, islands, mean_corr)
+        classifications.append(classification)
+
+        score = CQONMarsEarthComparator().calculate_life_like_score(mean_coh, islands, mean_corr)
         performance_scores.append(score)
 
     bars = ax2.bar(labels, performance_scores, color=[colors[s] for s in scenarios], alpha=0.7)
     ax2.set_ylabel('Life-Like Organization Score')
-    ax2.set_title('B) Life-Like Organization Scoring', fontsize=12, fontweight='bold')
-    ax2.set_ylim(0, 5)
+    ax2.set_title('B) Standardized Life-Like Organization Scoring', fontsize=12, fontweight='bold')
+    ax2.set_ylim(0, 4.5)
 
     # Add value labels on bars
-    for bar, score in zip(bars, performance_scores):
+    for bar, score, classification in zip(bars, performance_scores, classifications):
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width() / 2., height + 0.1,
-                 f'{score}/4', ha='center', va='bottom', fontweight='bold')
+                 f'{classification}\n({score}/4)', ha='center', va='bottom',
+                 fontweight='bold', fontsize=9)
 
     plt.tight_layout()
-    plt.savefig('CQON_Statistical_Analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('CQON_Statistical_Analysis_Standardized.png', dpi=300, bbox_inches='tight')
     plt.show()
 
-    # FIGURE 3: Coherence Maps
+    # FIGURE 3: Coherence Maps with Standardized Classification
     fig3, axs = plt.subplots(2, 2, figsize=(12, 10))
     axs = axs.flatten()
 
@@ -375,42 +446,26 @@ def create_comprehensive_visualization(all_results, stats_df):
         # Performance metrics for title
         mean_coh = np.mean([r['final_mean_coherence'] for r in all_results[scenario_name]])
         islands = np.mean([r['max_coherence_islands'] for r in all_results[scenario_name]])
-        score = calculate_life_like_score(mean_coh, islands, -0.4)
-        status = "HIGH" if score >= 3 else "MEDIUM" if score >= 2 else "LOW"
+        classification = all_results[scenario_name][0]['organization_classification']
+        score = all_results[scenario_name][0]['life_like_score']
 
-        axs[i].set_title(f'{scenario_name.replace("_", " ")}\nScore: {status} (Coherence: {mean_coh:.3f})',
+        axs[i].set_title(f'{scenario_name.replace("_", " ")}\nClassification: {classification} (Score: {score}/4)',
                          fontweight='bold', fontsize=11)
 
         # Add colorbar for each subplot
         plt.colorbar(im, ax=axs[i], shrink=0.8)
 
     plt.tight_layout()
-    plt.savefig('CQON_Coherence_Maps.png', dpi=300, bbox_inches='tight')
+    plt.savefig('CQON_Coherence_Maps_Standardized.png', dpi=300, bbox_inches='tight')
     plt.show()
-
-
-def calculate_life_like_score(coh, islands, corr):
-    """Life-like organization scoring"""
-    score = 0
-    if coh > 0.35: score += 1
-    if islands >= 2: score += 1
-    if corr < -0.4: score += 1
-    if coh > 0.4 and islands >= 3: score += 1
-    return score
-
-
-def calculate_life_like_score(coh, islands, corr):
-    """Yaşam-benzeri organizasyon skoru"""
-    score = 0
-    if coh > 0.35: score += 1
-    if islands >= 2: score += 1
-    if corr < -0.4: score += 1
-    if coh > 0.4 and islands >= 3: score += 1
-    return score
 
 
 def main():
     print("CQON Mars-Dünya Karşılaştırmalı Analizi Başlatılıyor...")
+    print("STANDARDIZED THRESHOLDS:")
+    print(f"• Coherence Threshold: > {CQONMarsEarthComparator.COHERENCE_THRESHOLD}")
+    print(f"• Islands Threshold: ≥ {CQONMarsEarthComparator.ISLANDS_THRESHOLD}")
+    print(f"• Correlation Threshold: < {CQONMarsEarthComparator.CORRELATION_THRESHOLD}")
     print("=" * 60)
 
     comparator = CQONMarsEarthComparator(grid_size=12, dt=0.1, K0=1.0)
@@ -421,7 +476,7 @@ def main():
 
     # Sonuç tablosu
     print("\n" + "=" * 80)
-    print("KARŞILAŞTIRMALI PERFORMANS TABLOSU")
+    print("KARŞILAŞTIRMALI PERFORMANS TABLOSU (STANDARDIZED)")
     print("=" * 80)
 
     summary_data = []
@@ -430,10 +485,17 @@ def main():
         growths = [r['coherence_growth_percent'] for r in results_list]
         islands = [r['max_coherence_islands'] for r in results_list]
         correlations = [r['energy_entropy_correlation'] for r in results_list]
+        classifications = [r['organization_classification'] for r in results_list]
 
         mean_coh = np.mean(coherences)
         mean_islands = np.mean(islands)
         mean_corr = np.mean(correlations)
+
+        # Get majority classification
+        classification_counts = {}
+        for cls in classifications:
+            classification_counts[cls] = classification_counts.get(cls, 0) + 1
+        majority_classification = max(classification_counts, key=classification_counts.get)
 
         summary_data.append({
             'Senaryo': scenario_name.replace('_', ' '),
@@ -442,9 +504,8 @@ def main():
             'Uyum Büyümesi': f"{np.mean(growths):.1f}%",
             'Ort. Ada': f"{mean_islands:.1f} ± {np.std(islands):.1f}",
             'E-S Korelasyon': f"{mean_corr:.3f}",
-            'Yaşam-Benzeri': 'EVET' if calculate_life_like_score(mean_coh, mean_islands,
-                                                                 mean_corr) >= 3 else 'KISMEN' if calculate_life_like_score(
-                mean_coh, mean_islands, mean_corr) >= 2 else 'HAYIR'
+            'Sınıflandırma': majority_classification,
+            'Yaşam-Benzeri Skor': f"{np.mean([r['life_like_score'] for r in results_list]):.1f}/4"
         })
 
     summary_df = pd.DataFrame(summary_data)
